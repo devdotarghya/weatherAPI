@@ -1,0 +1,42 @@
+name: AWS Lambda CICD
+on:
+  push:
+    branches: [main]
+env:
+  tableName: 'weather'
+  lambdaFunctionName: 'weather-lambda'
+  jarFileName: 'weatherapi-0.0.1-SNAPSHOT.jar'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-east-1
+      - name: Verify AWS DynamoDB
+        run: aws dynamodb describe-table --table-name ${{env.tableName}}
+        continue-on-error: true
+      - name: Create AWS DynamoDB
+        run: aws dynamodb create-table --table-name ${{tableName}} --attribute-definitions AttributeName=city,
+             AttributeType=S AttributeName=temp,AttributeType=S AttributeName=tempMin,AttributeType=S AttributeName=tempMax,AttributeType=S
+             AttributeName=humidity,AttributeType=S
+             --key-schema AttributeName=city,KeyType=HASH AttributeName=temp,
+             KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+#      - name: Create AWS Lambda Function
+#        run: |
+#          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::763857617563:role/lambda-ex --zip-file fileb://target/${{env.jarFileName}}
+#        continue-on-error: true
+#      - name: Update Lambda Function
+#        run: aws lambda update-function-code --function-name ${{env.lambdaFunctionName}} --zip-file fileb://target/${{env.jarFileName}}
