@@ -29,8 +29,7 @@ jobs:
         run: aws dynamodb describe-table --table-name ${{env.tableName}}
         continue-on-error: true
       - name: Create AWS DynamoDB
-        run: aws dynamodb create-table --table-name ${{env.tableName}} --attribute-definitions AttributeName=city,AttributeType=S AttributeName=temp,AttributeType=S AttributeName=tempMin,AttributeType=S AttributeName=tempMax,AttributeType=S AttributeName=humidity,AttributeType=S \
-             --key-schema AttributeName=city,KeyType=HASH AttributeName=temp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+        run: aws dynamodb create-table --table-name ${{env.tableName}} --attribute-definitions AttributeName=city,AttributeType=S AttributeName=temp,AttributeType=S AttributeName=tempMin,AttributeType=S AttributeName=tempMax,AttributeType=S AttributeName=humidity,AttributeType=S --key-schema AttributeName=city,KeyType=HASH AttributeName=temp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 #      - name: Create AWS Lambda Function
 #        run: |
 #          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::763857617563:role/lambda-ex --zip-file fileb://target/${{env.jarFileName}}
