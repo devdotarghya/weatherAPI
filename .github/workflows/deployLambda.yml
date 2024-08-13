@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
       - name: Create AWS Lambda Function
         run: |
-          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::882612863003:role/lambda-role --zip-file fileb://target/${{env.jarFileName}}
+          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::882612863003:role/lambda-role-new --zip-file fileb://target/${{env.jarFileName}}
         continue-on-error: true
       - name: Update Lambda Function
         run: aws lambda update-function-code --function-name ${{env.lambdaFunctionName}} --zip-file fileb://target/${{env.jarFileName}}
