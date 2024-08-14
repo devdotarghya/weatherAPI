@@ -19,19 +19,21 @@ public class WeatherService {
 
     private WeatherRepository weatherRepository;
 
+    private static String APP_ID = "092e3a00a9edd416d1b344ed6e005f1b";
+
     public WeatherService(RestClient restClient, ObjectMapper objectMapper, WeatherRepository weatherRepository){
         this.restClient = restClient;
         this.objectMapper = objectMapper;
         this.weatherRepository = weatherRepository;
     }
 
-    public Weather getWeatherByCity(String city, String appId) {
+    public Weather getWeatherByCity(String city) {
         Weather weather = new Weather();
         String weatherResp = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/")
                         .queryParam("q", city)
-                        .queryParam("appid", appId)
+                        .queryParam("appid", APP_ID)
                         .build())
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .retrieve()
@@ -49,6 +51,6 @@ public class WeatherService {
             ex.printStackTrace();
         }
         weatherRepository.save(weather);
-        return weather;
+        return weatherRepository.get(city);
     }
 }

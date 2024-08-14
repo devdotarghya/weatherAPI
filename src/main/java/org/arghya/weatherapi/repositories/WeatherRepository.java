@@ -12,12 +12,11 @@ public class WeatherRepository {
         this.dynamoDBMapper = dynamoDBMapper;
     }
 
-    public Weather save( Weather weather) {
+    public void save( Weather weather) {
         dynamoDBMapper.save(weather);
-        return weather;
     }
 
-//    public Weather get(String city) {
-//        dynamoDBMapper.
-//    }
+    public Weather get(String city) {
+        return dynamoDBMapper.load(Weather.class, city);
+    }
 }

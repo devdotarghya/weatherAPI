@@ -20,8 +20,7 @@ public class WeatherController {
     }
 
     @GetMapping
-    public ResponseEntity<Weather> getWeatherByCity(@RequestParam(name = "city") String city,
-                                                    @RequestParam(name = "appId") String appId){
-        return ResponseEntity.ok(weatherService.getWeatherByCity(city, appId));
+    public ResponseEntity<Weather> getWeatherByCity(@RequestParam(name = "city") String city){
+        return ResponseEntity.ok(weatherService.getWeatherByCity(city));
     }
 }
