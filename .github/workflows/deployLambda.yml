@@ -2,6 +2,19 @@ name: AWS Lambda CICD
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    # Optional: Define inputs if you want to pass parameters to the workflow
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      environment:
+        description: 'dev'
+        required: true
+        type: choice
+        options:
+          - 'development'
 env:
   tableName: 'weather'
   lambdaFunctionName: 'weather-lambda'
