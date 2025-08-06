@@ -58,5 +58,5 @@ jobs:
         id: createLambda
         if: steps.updateLambda.outcome == 'failure'
         run: |
-          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::574373443538:role/lambda-role-new --zip-file fileb://target/${{env.jarFileName}}
+          aws lambda create-function --function-name ${{env.lambdaFunctionName}} --runtime java17 --handler org.arghya.weatherapi.StreamLambdaHandler::handleRequest --role arn:aws:iam::713881800818:role/lambdarole --zip-file fileb://target/${{env.jarFileName}}
         continue-on-error: true
